@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block title %}User{% endblock %}
+
+{% block content %}
+
+<h1>Hallo, {{ current_user.username }}</h1>
+
+{% if tables != [] %}
+<p>Sie sind Mitglied in folgenden Deff-Tabellen:</p>
+
+  {% for link in tables %}
+    <hr>
+    <h2>{{ link.table.name }}</h2>
+    {% if link.is_trusted %}
+      {% if link.is_admin %}
+        <p>Admin</p>
+        <p><a href="">Tabelleneinstellungen bearbeiten</a></p>
+      {% else %}
+        <p>vertrauenswürdig</p>
+      {% endif %}
+      <p><a href="{{ url_for('table_overview', tablename = link.table.name)}}">Tabellenübersicht</a></p>
+    {% endif %}
+    <p><a href="">Truppen aktualisieren</a></p>
+  {% endfor %}
+{% else %}
+  <p>Noch kein Mitglied von Deff-Tabellen!</p>
+{% endif %}
+
+{% endblock %}

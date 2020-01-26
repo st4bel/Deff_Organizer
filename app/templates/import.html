@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block title %}Import{% endblock %}
+{% block content %}
+
+
+<form action="" method="post" novalidate>
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.text.label }}<br>
+    {{ form.text(size=10000) }}
+    {% for error in form.text.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>{{ form.submit() }}</p>
+</form>
+{% endblock %}

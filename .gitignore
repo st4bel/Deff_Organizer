@@ -21,3 +21,10 @@ $RECYCLE.BIN/
 # =========================
 # Operating System Files
 # =========================
+
+venv
+__pycache__
+unterstützungsseite
+*.txt
+*.db
+migrations
