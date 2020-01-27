@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<h1>Hallo, {{ current_user.username }}</h1>
+<h1>Hallo, {{ current_user.username }} {% if current_user.is_admin %}<a href="{{url_for('admin')}}">- Admin -</a>{% endif %}</h1>
 
 {% if tables != [] %}
 <p>Sie sind Mitglied in folgenden Deff-Tabellen:</p>

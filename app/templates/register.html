@@ -34,6 +34,9 @@
     {% endfor %}
   </p>
   <p>{{ form.submit() }}</p>
+  {% if admin %}
+    <p>Sie sind der erste Benutzer auf diesem Server. Dieser Benutzer wird Admin.</p>
+  {% endif %}
 </form>
 
 

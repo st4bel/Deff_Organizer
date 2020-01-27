@@ -37,15 +37,18 @@ def logout():
 def register():
     if current_user.is_authenticated:
         return redirect(url_for("index"))
+    admin = False
+    if User.query.filter_by(is_admin = True).first() == None:
+        admin = True
     form = RegristrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
+        user = User(username=form.username.data, email=form.email.data, is_admin = admin)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
         flash("Benutzer {} erfolgreich erstellt".format(user.username))
         return redirect(url_for("index"))
-    return render_template("register.html", form = form)
+    return render_template("register.html", form = form, admin = admin)
 
 @app.route("/user")
 @login_required
@@ -86,3 +89,11 @@ def table_overview(tablename):
     o = Organizer.query.filter_by(name = tablename).first_or_404()
     member = LinkMember.query.filter_by(user = current_user, table = o).first_or_404()
     return render_template("table_overview.html", member = member)
+
+@app.route("/admin")
+@login_required
+def admin():
+    if current_user.is_admin != True:
+        flash("Please login as Admin!")
+        return redirect(url_for("index"))
+    return render_template("admin.html")

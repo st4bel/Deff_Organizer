@@ -3,4 +3,4 @@ from app.models import *
 
 @app.shell_context_processor
 def make_shell_context():
-    return {"db": db, "User": User, "Organizer": Organizer, "LinkMember": LinkMember, "LinkIntern": LinkIntern, "LinkExtern": LinkExtern}
+    return {"db": db, "User": User, "Organizer": Organizer, "LinkMember": LinkMember}#, "LinkIntern": LinkIntern, "LinkExtern": LinkExtern}

@@ -20,8 +20,9 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index = True, unique = True)
     password_hash = db.Column(db.String(128))
     tables = db.relationship("LinkMember", back_populates = "user")
-#    table_intern = db.relationship("LinkIntern", back_populates = "user")
-#    table_extern = db.relationship("LinkExtern", back_populates = "user")
+    is_admin = db.Column(db.Boolean)
+    tables_intern = db.relationship("LinkIntern", back_populates = "user_intern")
+    tables_extern = db.relationship("LinkExtern", back_populates = "user")
 
     def __repr__(self):
         return "<User {}>".format(self.username)
@@ -40,33 +41,35 @@ class Organizer(db.Model):
     has_bows = db.Column(db.Boolean)
     has_paladin = db.Column(db.Boolean)
     users = db.relationship("LinkMember", back_populates = "table")
-#    intern = db.relationship("LinkIntern", back_populates = "table")
-#    extern = db.relationship("LinkExtern", back_populates = "table")
+    intern = db.relationship("LinkIntern", back_populates = "table_intern")
+    extern = db.relationship("LinkExtern", back_populates = "table")
     def __repr__(self):
         return "<Organizer {}>".format(self.name)
 
-#class LinkIntern(db.Model):
-#    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key = True)
-#    organizer_id = db.Column(db.Integer, db.ForeignKey("organizer.id"), primary_key = True)
-#    spear = db.Column(db.Integer)
-#    sword = db.Column(db.Integer)
-#    bow = db.Column(db.Integer)
-#    skav = db.Column(db.Integer)
-##    paladin = db.Column(db.Integer)
-#    user = db.relationship("User", back_populates = "tables_intern")
-#    table = db.relationship("Organizer", back_populates = "intern")
-#    def __repr__(self):
-#        return "<Internal Deff from {} in Table {}>".format(self.user.username, self.table.name)
+class LinkIntern(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key = True)
+    organizer_id = db.Column(db.Integer, db.ForeignKey("organizer.id"), primary_key = True)
+    spear = db.Column(db.Integer)
+    sword = db.Column(db.Integer)
+    bow = db.Column(db.Integer)
+    skav = db.Column(db.Integer)
+    paladin = db.Column(db.Integer)
+    user_intern = db.relationship("User", back_populates = "tables_intern")
+    table_intern = db.relationship("Organizer", back_populates = "intern")
 
-#class LinkExtern(db.Model):
-#    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key = True)
-#    organizer_id = db.Column(db.Integer, db.ForeignKey("organizer.id"), primary_key = True)
-#
-#    user = db.relationship("User", back_populates = "tables_extern")
-#    table = db.relationship("Organizer", back_populates = "extern")
-#
-#    def __repr__(self):
-#        return "<External Deff from {} to  in Table {}>".format(self.user.username, self.table.name)
+    def __repr__(self):
+        return "<Internal Deff from {} in Table {}>".format(self.user.username, self.table.name)
+
+class LinkExtern(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key = True)
+    organizer_id = db.Column(db.Integer, db.ForeignKey("organizer.id"), primary_key = True)
+    bh = db.Column(db.Integer)
+    coord = db.Column(db.Integer)
+    user = db.relationship("User", back_populates = "tables_extern")
+    table = db.relationship("Organizer", back_populates = "extern")
+
+    def __repr__(self):
+        return "<External Deff from {} to  in Table {}>".format(self.user.username, self.table.name)
 
 @login.user_loader
 def load_user(id):
