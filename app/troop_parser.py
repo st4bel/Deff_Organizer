@@ -12,7 +12,8 @@ def find_coords(text):
     r = re.findall("\(([0-9]+\|[0-9]+)\)",text)
     if r == []:
         return None
-    return r[-1]
+    s = r[-1].split("|")
+    return int(s[0])*1000+int(s[1])
 
 def parse_troops(text, has_bows, has_paladin):
     lines = text.split("\n")
